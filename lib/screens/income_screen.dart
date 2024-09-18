@@ -43,19 +43,25 @@ class IncomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(
-                    bottom: 10,
+                    bottom: 5,
+                    left: 10,
+                    right: 10,
                   ),
                   child: ListTile(
                     tileColor: income[index].source == 'Rent'
-                        ? Colors.yellow
+                        ? Color.fromARGB(179, 235, 193, 193)
                         : income[index].source == 'Salary'
-                            ? Colors.lightBlue
-                            : income[index].source == 'Cash Bond'
-                                ? Colors.white70
-                                : Colors.lightGreenAccent,
-                    leading: Icon(
-                      Icons.shopping_cart_outlined,
-                    ),
+                            ? Color.fromARGB(255, 186, 192, 228)
+                            : Color.fromARGB(255, 198, 216, 177),
+                    leading: income[index].source == 'Rent'
+                        ? Icon(
+                            Icons.house_outlined,
+                          )
+                        : income[index].source == 'Salary'
+                            ? Icon(Icons.wallet_outlined)
+                            : Icon(
+                                Icons.accessibility_new_outlined,
+                              ),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -66,7 +72,7 @@ class IncomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          income[index].amount.toString() + ' RS',
+                          '+' + income[index].amount.toString() + ' RS',
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                           ),

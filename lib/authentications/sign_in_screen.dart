@@ -1,5 +1,6 @@
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
 import 'package:expense_and_income_tracker/controllers/input_field_controller.dart';
+import 'package:expense_and_income_tracker/firebase/firebase_functions.dart';
 import 'package:expense_and_income_tracker/screens/first_screen.dart';
 import 'package:expense_and_income_tracker/widgets/inputFieldWidget.dart';
 import 'package:flutter/material.dart';
@@ -109,23 +110,23 @@ class _UserLoginState extends State<UserLogin> {
               completionDuration: const Duration(seconds: 3),
               color: const Color(0xffF8B31A),
               onPressed: () {
-                // if (controller.emailController.text.isEmpty &&
-                //     controller.passwordController.text.isEmpty) {
-                //   Fluttertoast.showToast(
-                //       msg: "Fill all fields",
-                //       toastLength: Toast.LENGTH_SHORT,
-                //       gravity: ToastGravity.CENTER,
-                //       timeInSecForIosWeb: 5,
-                //       backgroundColor: Color(0xffF8F8F8),
-                //       textColor: Colors.red,
-                //       fontSize: 16.0);
-                // } else {
-                //   // Firebasefunctions().loggingIn(
-                //   //   controller.emailController.text,
-                //   //   controller.passwordController.text,
-                //   //   context,
-                //   // );
-                // }
+                if (controller.emailController.text.isEmpty &&
+                    controller.passwordController.text.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Fill all fields",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 5,
+                      backgroundColor: Color(0xffF8F8F8),
+                      textColor: Colors.red,
+                      fontSize: 16.0);
+                } else {
+                  FirebaseFunctions().userLogin(
+                    controller.emailController.text,
+                    controller.passwordController.text,
+                    context,
+                  );
+                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(

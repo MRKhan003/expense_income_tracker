@@ -1,9 +1,8 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
-import 'package:expense_and_income_tracker/widgets/drawerItems.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
 class ExpenseScreen extends StatefulWidget {
@@ -18,20 +17,6 @@ RoundedLoadingButtonController buttonController =
 DateTime selectedDate = DateTime.now();
 
 class _ExpenseScreenState extends State<ExpenseScreen> {
-  // void _selectDate(BuildContext context) async {
-  //   final DateTime? selector = await showDatePicker(
-  //     context: context,
-  //     initialDate: selectedDate,
-  //     firstDate: DateTime(2000, 1),
-  //     lastDate: DateTime(2100),
-  //   );
-  //   if (selector != null && selector != DateTime.now()) {
-  //     setState(() {
-  //       selectedDate = selector;
-  //     });
-  //   }
-  // }
-
   List<Expense> expenses = [
     Expense(
       'Food',
@@ -105,18 +90,28 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             child: ListView.builder(
               itemCount: expenses.length,
               itemBuilder: (context, index) {
+                double percent = (expenses[index].amount / 1090) * 100;
                 return Padding(
                   padding: const EdgeInsets.only(
-                    bottom: 10,
+                    bottom: 5,
+                    left: 10,
+                    right: 10,
                   ),
                   child: ListTile(
                     tileColor: expenses[index].category == 'Food'
-                        ? Colors.amber
+                        ? Color.fromARGB(179, 235, 193, 193)
                         : expenses[index].category == 'Fees'
-                            ? Colors.blue
-                            : Colors.lightGreen,
-                    leading: Icon(
-                      Icons.food_bank,
+                            ? Color.fromARGB(255, 186, 192, 228)
+                            : Color.fromARGB(255, 198, 216, 177),
+                    leading: CircularPercentIndicator(
+                      radius: 20,
+                      percent: percent / 100,
+                      center: Text(
+                        percent.toStringAsPrecision(3) + '%',
+                        style: GoogleFonts.poppins(
+                          fontSize: 8,
+                        ),
+                      ),
                     ),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,7 +123,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                           ),
                         ),
                         Text(
-                          expenses[index].amount.toString() + ' RS',
+                          '-' + expenses[index].amount.toString() + ' RS',
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                           ),

@@ -40,6 +40,8 @@ dependencies:
   fluttertoast: ^8.2.8
   google_fonts: ^6.2.1
   firebase_auth: ^5.2.1
+  cloud_firestore:
+  firebase_storage:
   flutter_svg: ^2.0.10+1
   fl_chart:
   date_time_format:
@@ -48,6 +50,8 @@ dependencies:
   flutter_datetime_picker:
   dropdown_button2:
   image_picker:
+  firebase_core:
+  percent_indicator:
 
 dev_dependencies:
   flutter_test:

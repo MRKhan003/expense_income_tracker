@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
 import 'package:expense_and_income_tracker/screens/expense_screen.dart';
 import 'package:expense_and_income_tracker/screens/home_screen.dart';
 import 'package:expense_and_income_tracker/screens/income_screen.dart';
 import 'package:expense_and_income_tracker/widgets/drawerItems.dart';
 import 'package:expense_and_income_tracker/widgets/expense_fields.dart';
 import 'package:expense_and_income_tracker/widgets/income_fields.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,10 +24,38 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  @override
+  void initState() {
+    getUserName();
+    super.initState();
+  }
+
   String? profileImage;
   File? image;
   int running = 0;
+  String? userName;
   final ImagePicker _picker = ImagePicker();
+  Future<bool> getUserName() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where(
+            'UserID',
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+          )
+          .get();
+      snapshot.docs.forEach((doc) {
+        setState(() {
+          userName = doc['DisplayName'];
+        });
+      });
+      return true;
+    } catch (e) {
+      print('Error');
+      return false;
+    }
+  }
+
   Future<void> _getImageFromGallery() async {
     //final picker = ImagePicker();
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -175,8 +206,8 @@ class _FirstScreenState extends State<FirstScreen> {
                   right: 10,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
                       onTap: () => _getImageFromGallery(),
@@ -189,7 +220,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       ),
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -200,7 +231,7 @@ class _FirstScreenState extends State<FirstScreen> {
                           ),
                         ),
                         Text(
-                          'Roshaan',
+                          userName ?? 'user',
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -227,7 +258,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 child: Draweritems(
                   title: 'Add Expense',
                   icon: Icons.monetization_on,
-                  cardColor: Colors.lightBlue,
+                  cardColor: Colors.white70,
                 ),
               ),
             ),
@@ -242,25 +273,27 @@ class _FirstScreenState extends State<FirstScreen> {
                 child: Draweritems(
                   title: 'Add Income',
                   icon: Icons.money,
-                  cardColor: Colors.lightGreenAccent,
+                  cardColor: Colors.white70,
                 ),
-              ),
-            ),
-            Expanded(
-              child: Draweritems(
-                title: 'Show Expense',
-                icon: Icons.do_not_touch,
-                cardColor: Colors.lightBlueAccent,
               ),
             ),
             Spacer(),
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 10,
+                left: 10,
+                right: 10,
               ),
               child: RoundedLoadingButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AccountCreation(),
+                    ),
+                  );
+                },
                 controller: buttonController,
-                onPressed: () {},
                 child: Text(
                   'Logout',
                   style: GoogleFonts.poppins(

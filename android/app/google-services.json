@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "639027841056",
+    "project_id": "expense-income-tracker-f46dd",
+    "storage_bucket": "expense-income-tracker-f46dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639027841056:android:3e0dd627d8667cc22e1445",
+        "android_client_info": {
+          "package_name": "com.example.expense_and_income_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7dZVMX1qHGPAYPSp59v_9VkazOHGvKMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

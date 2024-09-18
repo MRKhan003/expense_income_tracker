@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/widgets/drawerItems.dart';
 import 'package:expense_and_income_tracker/widgets/expense_chart.dart';
 import 'package:expense_and_income_tracker/widgets/expense_fields.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -332,16 +334,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                       bottom: 5,
+                      left: 10,
+                      right: 10,
                     ),
                     child: ListTile(
                       tileColor: expenses[index].category == 'Food'
-                          ? Colors.amber
+                          ? Color.fromARGB(179, 235, 193, 193)
                           : expenses[index].category == 'Fees'
-                              ? Colors.blue
-                              : Colors.lightGreen,
-                      leading: Icon(
-                        Icons.food_bank,
-                      ),
+                              ? Color.fromARGB(255, 186, 192, 228)
+                              : Color.fromARGB(255, 198, 216, 177),
+                      leading: expenses[index].category == 'Food'
+                          ? Icon(
+                              Icons.food_bank,
+                            )
+                          : expenses[index].category == 'Fees'
+                              ? Icon(Icons.monetization_on_outlined)
+                              : expenses[index].category == 'Transportation'
+                                  ? Icon(
+                                      Icons.directions_bus_filled_outlined,
+                                    )
+                                  : expenses[index].category == 'Entertainment'
+                                      ? Icon(
+                                          Icons.movie_creation_outlined,
+                                        )
+                                      : expenses[index].category == 'Shopping'
+                                          ? Icon(
+                                              Icons.shopping_cart_outlined,
+                                            )
+                                          : Icon(
+                                              Icons.accessibility_new_outlined,
+                                            ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -352,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Text(
-                            expenses[index].amount.toString() + ' RS',
+                            '-' + expenses[index].amount.toString() + ' RS',
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                             ),

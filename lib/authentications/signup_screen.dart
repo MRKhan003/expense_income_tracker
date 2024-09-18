@@ -1,6 +1,7 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:expense_and_income_tracker/authentications/sign_in_screen.dart';
 import 'package:expense_and_income_tracker/controllers/input_field_controller.dart';
+import 'package:expense_and_income_tracker/firebase/firebase_functions.dart';
 import 'package:expense_and_income_tracker/widgets/inputFieldWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -62,8 +63,8 @@ class _AccountCreationState extends State<AccountCreation> {
                 bottom: 10,
               ),
               child: InputFields(
-                fieldText: "Name",
-                textController: controller.nameController,
+                fieldText: "User Name",
+                textController: controller.userNameController,
                 keyboardType: TextInputType.name,
                 hideText: false,
               ),
@@ -75,8 +76,8 @@ class _AccountCreationState extends State<AccountCreation> {
                 bottom: 10,
               ),
               child: InputFields(
-                fieldText: "User Name",
-                textController: controller.userNameController,
+                fieldText: "Display Name",
+                textController: controller.nameController,
                 keyboardType: TextInputType.name,
                 hideText: false,
               ),
@@ -130,35 +131,36 @@ class _AccountCreationState extends State<AccountCreation> {
               resetDuration: const Duration(seconds: 5),
               color: const Color(0xffF8B31A),
               onPressed: () {
-                // if (controller.nameController.text.isNotEmpty &&
-                //     controller.emailController.text.isNotEmpty &&
-                //     controller.userNameController.text.isNotEmpty &&
-                //     controller.passwordController.text.isNotEmpty &&
-                //     controller.passwordConfirmController.text.isNotEmpty &&
-                //     controller.passwordController.text ==
-                //         controller.passwordConfirmController.text) {
-                //   // Firebasefunctions().signUp(
-                //   //     controller.emailController.text,
-                //   //     controller.passwordController.text,
-                //   //     controller.userNameController.text,
-                //   //     controller.nameController.text,
-                //   //     context);
-                // } else {
-                //   Fluttertoast.showToast(
-                //       msg: "Fill all fields",
-                //       toastLength: Toast.LENGTH_SHORT,
-                //       gravity: ToastGravity.BOTTOM,
-                //       timeInSecForIosWeb: 5,
-                //       backgroundColor: Color(0xffF8F8F8),
-                //       textColor: Colors.red,
-                //       fontSize: 16.0);
-                // }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserLogin(),
-                  ),
-                );
+                if (controller.nameController.text.isNotEmpty &&
+                    controller.emailController.text.isNotEmpty &&
+                    controller.userNameController.text.isNotEmpty &&
+                    controller.passwordController.text.isNotEmpty &&
+                    controller.passwordConfirmController.text.isNotEmpty &&
+                    controller.passwordController.text ==
+                        controller.passwordConfirmController.text) {
+                  FirebaseFunctions().createUser(
+                    controller.userNameController.text,
+                    controller.nameController.text,
+                    controller.emailController.text,
+                    controller.passwordController.text,
+                    context,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Fill all fields",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 5,
+                      backgroundColor: Color(0xffF8F8F8),
+                      textColor: Colors.red,
+                      fontSize: 16.0);
+                }
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => UserLogin(),
+                //   ),
+                // );
               },
               child: Text(
                 'SIGN UP',

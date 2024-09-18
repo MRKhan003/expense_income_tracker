@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
 import 'package:expense_and_income_tracker/screens/first_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,19 +15,35 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void moveToIntro() {
-    Timer(
-      Duration(
-        seconds: 3,
-      ),
-      () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FirstScreen(),
-          ),
-        );
-      },
-    );
+    if (FirebaseAuth.instance.currentUser != null) {
+      Timer(
+        Duration(
+          seconds: 3,
+        ),
+        () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FirstScreen(),
+            ),
+          );
+        },
+      );
+    } else {
+      Timer(
+        Duration(
+          seconds: 3,
+        ),
+        () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AccountCreation(),
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
