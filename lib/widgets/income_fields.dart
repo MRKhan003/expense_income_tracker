@@ -1,4 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:expense_and_income_tracker/controllers/expense_controller.dart';
+import 'package:expense_and_income_tracker/firebase/firebase_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -11,16 +13,17 @@ class IncomeFields extends StatefulWidget {
 }
 
 class _IncomeFieldsState extends State<IncomeFields> {
-  String? selectedValue, selectedValue1;
+  ExpenseController controller = ExpenseController();
+  String? selectedValue;
   List<String> items = [
-    'Clothing',
-    'Health',
-    'Groceries',
-  ];
-  List<String> paymentMethods = [
-    'Cash',
-    'Card',
-    'Cheque',
+    'Register Cash Sales',
+    'Register Credit Card Sales',
+    'Register EBT Sales',
+    'Total Lotto Credit Card Sales',
+    'Total Scratch Instant Credit Card Sales',
+    'Vending Machine Lotto Sales',
+    'Vending Machine Instant Sales',
+    'Check Received from Vendor'
   ];
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,56 @@ class _IncomeFieldsState extends State<IncomeFields> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<String>(
+                  isExpanded: true,
+                  hint: const Text(
+                    'Income Type',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
+                  items: items
+                      .map((String item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  value: selectedValue,
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedValue = value;
+                    });
+                  },
+                  buttonStyleData: ButtonStyleData(
+                    height: 60,
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(left: 14, right: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Colors.black26,
+                      ),
+                      color: Colors.white,
+                    ),
+                    elevation: 2,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 40,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                controller: controller.vendorController,
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -88,6 +140,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                controller: controller.amountController,
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -141,58 +194,11 @@ class _IncomeFieldsState extends State<IncomeFields> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: const Text(
-                    'Income Method',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                  items: paymentMethods
-                      .map((String item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                  value: selectedValue1,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue1 = value;
-                    });
-                  },
-                  buttonStyleData: ButtonStyleData(
-                    height: 60,
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: Colors.black26,
-                      ),
-                      color: Colors.white,
-                    ),
-                    elevation: 2,
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
-                  ),
-                ),
-              ),
-            ),
-            selectedValue1 == 'Cheque'
+            selectedValue == 'Check Received from Vendor'
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: controller.chequeNumberController,
                       cursorColor: Colors.black45,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -306,7 +312,20 @@ class _IncomeFieldsState extends State<IncomeFields> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                UserDatabase().addIncome(
+                  selectedValue!,
+                  controller.vendorController.text,
+                  int.parse(controller.amountController.text),
+                  controller.chequeNumberController.text ?? '',
+                );
+                controller.amountController.clear();
+                controller.chequeNumberController.clear();
+                controller.vendorController.clear();
+                controller.amountController.clear();
+                controller.paymentTypeController.clear();
+                controller.reasonController.clear();
+              },
               child: Text(
                 'Save',
               ),

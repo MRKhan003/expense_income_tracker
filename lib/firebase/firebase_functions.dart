@@ -110,7 +110,7 @@ class FirebaseFunctions with ChangeNotifier {
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .get()
                   .then((DocumentSnapshot doc) {
-                return doc['UserName'];
+                return doc['DisplayName'];
               }),
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -119,11 +119,12 @@ class FirebaseFunctions with ChangeNotifier {
           textColor: Colors.green,
           fontSize: 16.0,
         );
+        navigateToNextScreenAfterLogin(context);
+        return true;
       } else {
         print('Error');
+        return false;
       }
-      navigateToNextScreenAfterLogin(context);
-      return true;
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(
         msg: e.message!,

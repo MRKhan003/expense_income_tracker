@@ -127,12 +127,6 @@ class _UserLoginState extends State<UserLogin> {
                     context,
                   );
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FirstScreen(),
-                  ),
-                );
               },
               child: Text(
                 'SIGN IN',

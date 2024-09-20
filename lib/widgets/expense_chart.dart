@@ -63,7 +63,7 @@ class ExpenseChart extends StatelessWidget {
         x: index,
         barRods: [
           BarChartRodData(
-            toY: expenses[index].amount,
+            toY: expenses[index].amount.toDouble(),
             color: barColors[index],
             width: 20,
           ),

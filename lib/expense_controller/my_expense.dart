@@ -1,6 +1,6 @@
 class Expense {
   final String category;
-  final double amount;
+  final int amount;
   final DateTime date;
 
   Expense(

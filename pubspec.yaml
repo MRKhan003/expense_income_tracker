@@ -52,6 +52,7 @@ dependencies:
   image_picker:
   firebase_core:
   percent_indicator:
+  provider:
 
 dev_dependencies:
   flutter_test:

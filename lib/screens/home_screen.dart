@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
+import 'package:expense_and_income_tracker/provider/expence_provider.dart';
 import 'package:expense_and_income_tracker/widgets/drawerItems.dart';
 import 'package:expense_and_income_tracker/widgets/expense_chart.dart';
 import 'package:expense_and_income_tracker/widgets/expense_fields.dart';
@@ -8,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
 class HomeScreen extends StatefulWidget {
+  int size = 100;
   HomeScreen({super.key});
 
   @override
@@ -20,17 +23,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    //totalExpense();
     super.initState();
   }
 
   String selectedPeriod = 'Last 7 Days';
+  int total1 = 0, temp1 = 0;
   double total = 0.0;
   double temp = 0.0;
   double avg = 0.0;
   bool isSelected = false;
   RoundedLoadingButtonController buttonController =
       RoundedLoadingButtonController();
-  int listLength = 3;
+  int listLength = 1;
+  int running = 0;
+  bool ref = true;
   String listLengthText = 'View All';
 
   void totalAmount(List<Expense> filterExpenseList, int index) {
@@ -62,52 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  List<Expense> expenses = [
-    Expense(
-      'Food',
-      200.0,
-      DateTime.now().subtract(
-        const Duration(days: 1),
-      ),
-    ),
-    Expense(
-      'Food',
-      140.0,
-      DateTime.now().subtract(
-        const Duration(days: 3),
-      ),
-    ),
-    Expense(
-      'Fees',
-      200.0,
-      DateTime.now().subtract(
-        const Duration(days: 1),
-      ),
-    ),
-    Expense(
-      'Transportation',
-      100.0,
-      DateTime.now().subtract(
-        const Duration(days: 3),
-      ),
-    ),
-    Expense(
-      'Shopping',
-      300.0,
-      DateTime.now().subtract(
-        const Duration(days: 8),
-      ),
-    ),
-    Expense(
-      'Entertainment',
-      150.0,
-      DateTime.now().subtract(
-        const Duration(days: 15),
-      ),
-    ),
-    // Add more expenses with dates
-  ];
-
   List<Expense> filterExpenses(List<Expense> allExpenses, String period) {
     DateTime now = DateTime.now();
     late DateTime startDate;
@@ -133,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var expenseProvider = Provider.of<ExpenceProvider>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -167,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       selectedPeriod = 'Last 7 Days';
                       totalAmount(
-                        filterExpenses(expenses, selectedPeriod),
+                        filterExpenses(
+                            expenseProvider.myExpense, selectedPeriod),
                         0,
                       );
                       isSelected = false;
@@ -202,7 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       selectedPeriod = 'Last Month';
                       totalAmount(
-                        filterExpenses(expenses, selectedPeriod),
+                        filterExpenses(
+                            expenseProvider.myExpense, selectedPeriod),
                         0,
                       );
                       isSelected = true;
@@ -271,14 +235,22 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Expanded(
-            child: ExpenseChart(
-              expenses: filterExpenses(
-                expenses,
-                selectedPeriod,
-              ),
-            ),
-          ),
+          expenseProvider.thisRunning == 0
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Color(
+                      0xffF8B31A,
+                    ),
+                  ),
+                )
+              : Expanded(
+                  child: ExpenseChart(
+                    expenses: filterExpenses(
+                      expenseProvider.myExpense,
+                      selectedPeriod,
+                    ),
+                  ),
+                ),
           const SizedBox(
             height: 50,
           ),
@@ -308,8 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: TextButton(
                     onPressed: () => setState(() {
                       listLengthText == 'View All'
-                          ? listLength = expenses.length
-                          : listLength = 3;
+                          ? listLength = expenseProvider.myExpense.length
+                          : listLength = 1;
                       listLengthText == 'View All'
                           ? listLengthText = 'Hide'
                           : listLengthText = 'View All';
@@ -326,75 +298,97 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: listLength,
-              itemBuilder: (context, index) {
-                return Material(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 5,
-                      left: 10,
-                      right: 10,
-                    ),
-                    child: ListTile(
-                      tileColor: expenses[index].category == 'Food'
-                          ? Color.fromARGB(179, 235, 193, 193)
-                          : expenses[index].category == 'Fees'
-                              ? Color.fromARGB(255, 186, 192, 228)
-                              : Color.fromARGB(255, 198, 216, 177),
-                      leading: expenses[index].category == 'Food'
-                          ? Icon(
-                              Icons.food_bank,
-                            )
-                          : expenses[index].category == 'Fees'
-                              ? Icon(Icons.monetization_on_outlined)
-                              : expenses[index].category == 'Transportation'
-                                  ? Icon(
-                                      Icons.directions_bus_filled_outlined,
-                                    )
-                                  : expenses[index].category == 'Entertainment'
-                                      ? Icon(
-                                          Icons.movie_creation_outlined,
-                                        )
-                                      : expenses[index].category == 'Shopping'
-                                          ? Icon(
-                                              Icons.shopping_cart_outlined,
-                                            )
-                                          : Icon(
-                                              Icons.accessibility_new_outlined,
-                                            ),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            expenses[index].category,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            '-' + expenses[index].amount.toString() + ' RS',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
+          expenseProvider.thisRunning == 0
+              ? SizedBox()
+              : expenseProvider.myExpense.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No expense added',
                       ),
-                      subtitle: Text(
-                        DateFormat('M-d-y').format(
-                          expenses[index].date,
-                        ),
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                        ),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: listLength,
+                        itemBuilder: (context, index) {
+                          return Material(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 5,
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: ListTile(
+                                tileColor: expenseProvider
+                                            .myExpense[index].category ==
+                                        'Cash'
+                                    ? Color.fromARGB(179, 235, 193, 193)
+                                    : expenseProvider
+                                                .myExpense[index].category ==
+                                            'Card'
+                                        ? Color.fromARGB(255, 186, 192, 228)
+                                        : Color.fromARGB(255, 198, 216, 177),
+                                leading:
+                                    expenseProvider.myExpense[index].category ==
+                                            'Cash'
+                                        ? Icon(
+                                            Icons.money_outlined,
+                                          )
+                                        : expenseProvider.myExpense[index]
+                                                    .category ==
+                                                'Card'
+                                            ? Icon(Icons.credit_card_outlined)
+                                            : expenseProvider.myExpense[index]
+                                                        .category ==
+                                                    'Cheque'
+                                                ? Icon(
+                                                    Icons.payment_outlined,
+                                                  )
+                                                : expenseProvider
+                                                            .myExpense[index]
+                                                            .category ==
+                                                        'Money added to ATM'
+                                                    ? Icon(
+                                                        Icons
+                                                            .account_balance_outlined,
+                                                      )
+                                                    : Icon(
+                                                        Icons.money_outlined,
+                                                      ),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      expenseProvider.myExpense[index].category,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      '-' +
+                                          expenseProvider
+                                              .myExpense[index].amount
+                                              .toString() +
+                                          ' RS',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                  DateFormat('EEE M-d-y').format(
+                                      expenseProvider.myExpense[index].date),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          )
         ],
       ),
     );

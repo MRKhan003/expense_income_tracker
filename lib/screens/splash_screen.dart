@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
+import 'package:expense_and_income_tracker/provider/expence_provider.dart';
 import 'package:expense_and_income_tracker/screens/first_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -54,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //providerFunction();
     return Scaffold(
       appBar: AppBar(),
       body: Center(
