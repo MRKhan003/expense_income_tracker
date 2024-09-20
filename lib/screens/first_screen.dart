@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
+import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/provider/expence_provider.dart';
 import 'package:expense_and_income_tracker/screens/expense_screen.dart';
 import 'package:expense_and_income_tracker/screens/home_screen.dart';
@@ -31,7 +32,6 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     getUserName();
-    getProfileImage();
     super.initState();
   }
 
@@ -60,35 +60,6 @@ class _FirstScreenState extends State<FirstScreen> {
     } catch (e) {
       print('Error');
       return false;
-    }
-  }
-
-  getProfileImage() async {
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .where(
-            'UserID',
-            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
-          )
-          .get();
-      snapshot.docs.forEach((doc) {
-        setState(() {
-          profileImage = doc['ProfileImage'];
-          running = 0;
-        });
-      });
-      print(profileImage);
-    } on FirebaseException catch (e) {
-      Fluttertoast.showToast(
-        msg: e.message.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
-        textColor: Colors.red,
-        fontSize: 16.0,
-      );
     }
   }
 
@@ -156,7 +127,7 @@ class _FirstScreenState extends State<FirstScreen> {
             .doc(FirebaseAuth.instance.currentUser!
                 .uid) // Replace with the current user's document ID
             .update({'ProfileImage': imageUrl});
-        getProfileImage();
+        //getProfileImage();
         setState(() {
           running = 0;
         });
@@ -178,7 +149,7 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
   _selectDate1(BuildContext context) async {
-    final DateTime? selector = await showDatePicker(
+    DateTime? selector = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2000, 1),
@@ -191,6 +162,19 @@ class _FirstScreenState extends State<FirstScreen> {
       });
     }
     return selectedDate;
+  }
+
+  List<Expense> filterExpenses(List<Expense> allExpenses, DateTime period) {
+    DateTime now = DateTime.now();
+    late DateTime startDate;
+
+    return allExpenses
+        .where(
+          (expense) => expense.date.isAfter(
+            selectedDate,
+          ),
+        )
+        .toList();
   }
 
   int selectedPage = 0;
@@ -207,11 +191,15 @@ class _FirstScreenState extends State<FirstScreen> {
   ];
   providerFunction() {
     if (loaded == false) {
-      var expenseProvider =
-          Provider.of<ExpenceProvider>(context, listen: false);
+      var expenseProvider = Provider.of<ExpenceProvider>(context, listen: true);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         expenseProvider.totalExpense();
         expenseProvider.totalIncome();
+      });
+      var imageProvider =
+          Provider.of<ProfileImageProvider>(context, listen: true);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        imageProvider.getProfileImage();
       });
     }
     setState(() {
@@ -222,6 +210,8 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     providerFunction();
+    var getImage = Provider.of<ProfileImageProvider>(context);
+    //var getList = Provider.of<ExpenceProvider>(context);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: selectedPage == 1 || selectedPage == 2 ? 70 : 50,
@@ -246,7 +236,28 @@ class _FirstScreenState extends State<FirstScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               child: IconButton(
-                onPressed: () => _selectDate1(context),
+                onPressed: () async {
+                  //_selectDate1(context);
+                  DateTime? selector = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2000, 1),
+                    lastDate: DateTime(2100),
+                  );
+                  setState(() {
+                    selectedPage == 1
+                        ? selectedDate = selector!
+                        : selectedDate1 = selector!;
+                  });
+                  if (selector != null) {
+                    selectedPage == 1
+                        ? Provider.of<ExpenceProvider>(context, listen: false)
+                            .updateSelectedDate(selectedDate)
+                        : Provider.of<ExpenceProvider>(context, listen: false)
+                            .updateSelectedIncomeDate(selectedDate1);
+                  }
+                  //getList.updateSelectedDate(selectedDate);
+                },
                 icon: Icon(
                   Icons.calendar_month,
                   color: Colors.black,
@@ -275,18 +286,23 @@ class _FirstScreenState extends State<FirstScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () => _getImageFromGallery(),
-                        child: CircleAvatar(
-                          maxRadius: 40,
-                          minRadius: 35,
-                          foregroundImage: profileImage == null
-                              ? AssetImage(
-                                  'assets/dp.jpg',
-                                )
-                              : NetworkImage(profileImage!),
-                        ),
-                      ),
+                      running == 1
+                          ? CircularProgressIndicator(
+                              color: Color(0xffF8B31A),
+                            )
+                          : GestureDetector(
+                              onTap: () => _getImageFromGallery(),
+                              child: CircleAvatar(
+                                maxRadius: 40,
+                                minRadius: 35,
+                                foregroundImage: getImage.thisProfileImage ==
+                                        null
+                                    ? const AssetImage(
+                                        'assets/dp.jpg',
+                                      )
+                                    : NetworkImage(getImage.thisProfileImage),
+                              ),
+                            ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,

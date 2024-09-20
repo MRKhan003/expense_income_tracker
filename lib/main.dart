@@ -16,8 +16,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ExpenceProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ExpenceProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileImageProvider(),
+        ),
+      ],
       child: MyApp(),
     ),
   );

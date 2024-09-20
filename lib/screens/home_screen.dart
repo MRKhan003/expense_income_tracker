@@ -23,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    //totalExpense();
     super.initState();
   }
 
@@ -31,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int total1 = 0, temp1 = 0;
   double total = 0.0;
   double temp = 0.0;
-  double avg = 0.0;
+  double avg = 0.0, avg1 = 0.0;
   bool isSelected = false;
   RoundedLoadingButtonController buttonController =
       RoundedLoadingButtonController();
@@ -59,13 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void defaultValue(List<Expense> defaultExpense, int index) {
-    for (var i = 0; i < 7; i++) {
-      temp = temp + defaultExpense[index].amount;
+    total1 = 0;
+    temp1 = 0;
+    avg1 = 0.0;
+    for (var i = 0; i < defaultExpense.length; i++) {
+      temp1 = temp1 + defaultExpense[index].amount;
       index++;
     }
     setState(() {
-      total = temp;
-      avg = total % 7;
+      total1 = temp1;
+      avg1 = total1 / 7;
     });
   }
 
@@ -95,6 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var expenseProvider = Provider.of<ExpenceProvider>(context);
+    defaultValue(
+      expenseProvider.myExpense,
+      0,
+    );
     return Scaffold(
       body: Column(
         children: [
@@ -130,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       selectedPeriod = 'Last 7 Days';
                       totalAmount(
                         filterExpenses(
-                            expenseProvider.myExpense, selectedPeriod),
+                          expenseProvider.myExpense,
+                          selectedPeriod,
+                        ),
                         0,
                       );
                       isSelected = false;
@@ -166,7 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       selectedPeriod = 'Last Month';
                       totalAmount(
                         filterExpenses(
-                            expenseProvider.myExpense, selectedPeriod),
+                          expenseProvider.myExpense,
+                          selectedPeriod,
+                        ),
                         0,
                       );
                       isSelected = true;
@@ -217,7 +227,9 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  total.toStringAsFixed(2),
+                  total < 1
+                      ? total1.toStringAsFixed(2)
+                      : total.toStringAsFixed(2),
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -225,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  avg.toStringAsFixed(2),
+                  avg < 1 ? avg1.toStringAsFixed(2) : avg.toStringAsFixed(2),
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

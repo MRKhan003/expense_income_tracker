@@ -26,78 +26,85 @@ class _IncomeScreenState extends State<IncomeScreen> {
   @override
   Widget build(BuildContext context) {
     var incomeProvider = Provider.of<ExpenceProvider>(context);
+    final incomeGetter = incomeProvider.thisFilteredIncome;
     return Scaffold(
       body: Column(
         children: [
           SizedBox(
             height: 10,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: incomeProvider.myIncome.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 5,
-                    left: 10,
-                    right: 10,
+          incomeGetter.isEmpty
+              ? Center(
+                  child: Text(
+                    'No income date',
                   ),
-                  child: ListTile(
-                    tileColor: incomeProvider.myIncome[index].incomeType ==
-                            'Register Credit Card Sales'
-                        ? Color.fromARGB(179, 235, 193, 193)
-                        : incomeProvider.myIncome[index].incomeType ==
-                                'Register Cash Sales'
-                            ? Color.fromARGB(255, 186, 192, 228)
-                            : Color.fromARGB(255, 198, 216, 177),
-                    leading: incomeProvider.myIncome[index].incomeType ==
-                            'Register Credit Card Sales'
-                        ? Icon(
-                            Icons.credit_card_outlined,
-                          )
-                        : incomeProvider.myIncome[index].incomeType ==
-                                'Register Cash Sales'
-                            ? Icon(Icons.money_outlined)
-                            : incomeProvider.myIncome[index].incomeType ==
-                                    'Check Received from Vendor'
-                                ? Icon(
-                                    Icons.account_balance_outlined,
-                                  )
-                                : Icon(
-                                    Icons.wallet_outlined,
-                                  ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          incomeProvider.myIncome[index].incomeType,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
+                )
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: incomeGetter.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                          left: 10,
+                          right: 10,
+                        ),
+                        child: ListTile(
+                          tileColor: incomeGetter[index].incomeType ==
+                                  'Register Credit Card Sales'
+                              ? Color.fromARGB(179, 235, 193, 193)
+                              : incomeGetter[index].incomeType ==
+                                      'Register Cash Sales'
+                                  ? Color.fromARGB(255, 186, 192, 228)
+                                  : Color.fromARGB(255, 198, 216, 177),
+                          leading: incomeGetter[index].incomeType ==
+                                  'Register Credit Card Sales'
+                              ? Icon(
+                                  Icons.credit_card_outlined,
+                                )
+                              : incomeGetter[index].incomeType ==
+                                      'Register Cash Sales'
+                                  ? Icon(Icons.money_outlined)
+                                  : incomeGetter[index].incomeType ==
+                                          'Check Received from Vendor'
+                                      ? Icon(
+                                          Icons.account_balance_outlined,
+                                        )
+                                      : Icon(
+                                          Icons.wallet_outlined,
+                                        ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                incomeGetter[index].incomeType,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                '+' +
+                                    incomeGetter[index].amount.toString() +
+                                    ' RS',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          subtitle: Text(
+                            DateFormat('EEE M-d-y').format(
+                              incomeGetter[index].time,
+                            ),
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                            ),
                           ),
                         ),
-                        Text(
-                          '+' +
-                              incomeProvider.myIncome[index].amount.toString() +
-                              ' RS',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      DateFormat('EEE M-d-y').format(
-                        incomeProvider.myIncome[index].time,
-                      ),
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
+                ),
         ],
       ),
     );

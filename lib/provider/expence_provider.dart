@@ -3,11 +3,34 @@ import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_income.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ExpenceProvider with ChangeNotifier {
   List<Expense> expenses = [];
+  DateTime selectedDate = DateTime.now();
+  List<Expense> filteredExpense = [];
   List<Expense> get myExpense => expenses;
+  List<Expense> get thisFilterExpense {
+    return filteredExpense.where((expense) {
+      return expense.date.year == thisDate.year &&
+          expense.date.month == thisDate.month &&
+          expense.date.day == thisDate.day;
+    }).toList();
+  }
+
+  DateTime get thisDate => selectedDate;
   List<MyIncome> income = [];
+  DateTime incomeTime1 = DateTime.now();
+  List<MyIncome> filteredIncome = [];
+  List<MyIncome> get thisFilteredIncome {
+    return filteredIncome.where((income) {
+      return income.time.year == thisIncomeDate.year &&
+          income.time.month == thisIncomeDate.month &&
+          income.time.day == thisIncomeDate.day;
+    }).toList();
+  }
+
+  DateTime get thisIncomeDate => incomeTime1;
   List<MyIncome> get myIncome => income;
   int size = 100;
   late String type, incomeType;
@@ -41,6 +64,7 @@ class ExpenceProvider with ChangeNotifier {
       size = expenses.length;
       expenses.isEmpty ? ref == true : ref == false;
       running = 1;
+      filteredExpense = expenses;
       print(total1);
       print(expenses);
       notifyListeners();
@@ -77,12 +101,70 @@ class ExpenceProvider with ChangeNotifier {
       size = income.length;
       income.isEmpty ? ref == true : ref == false;
       running = 1;
+      filteredIncome = income;
       print(total);
       print(income);
       notifyListeners();
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  void updateSelectedDate(DateTime date) {
+    print(date);
+    selectedDate = date;
+    print('update');
+    print(thisFilterExpense);
+    print(filteredExpense);
+    notifyListeners(); // Notify listeners that the date has changed
+  }
+
+  void updateSelectedIncomeDate(DateTime date) {
+    incomeTime1 = date;
+    notifyListeners();
+  }
+
+  void addIncome(MyIncome income) {
+    filteredIncome.add(income);
+    notifyListeners(); // Notify listeners that
+  }
+
+  void addExpense(Expense expense) {
+    filteredExpense.add(expense);
+    notifyListeners(); // Notify listeners of new expense addition
+  }
+}
+
+class ProfileImageProvider with ChangeNotifier {
+  int running = 0;
+  String profileImage = '';
+  String get thisProfileImage => profileImage;
+  getProfileImage() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where(
+            'UserID',
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+          )
+          .get();
+      snapshot.docs.forEach((doc) {
+        profileImage = doc['ProfileImage'];
+        running = 1;
+      });
+      notifyListeners();
+      print(profileImage);
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.message.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Color(0xffF8F8F8),
+        textColor: Colors.red,
+        fontSize: 16.0,
+      );
     }
   }
 }

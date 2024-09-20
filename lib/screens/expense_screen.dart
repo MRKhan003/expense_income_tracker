@@ -27,94 +27,82 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   }
 
   int total = 0, temp = 0;
+
   @override
   Widget build(BuildContext context) {
     var expenceProvider = Provider.of<ExpenceProvider>(context);
+    final expenses = expenceProvider.thisFilterExpense;
     return Scaffold(
       body: Column(
         children: [
-          // Container(
-          //   color: Color(
-          //     0xffF8B31A,
-          //   ),
-          //   alignment: Alignment.center,
-          //   child: Text(
-          //     textAlign: TextAlign.center,
-          //     DateFormat('EEE M-d-y').format(
-          //       selectedDate,
-          //     ),
-          //     style: GoogleFonts.poppins(
-          //       fontSize: 14,
-          //       color: Colors.black,
-          //     ),
-          //   ),
-          // ),
           const SizedBox(
             height: 10,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: expenceProvider.myExpense.length,
-              itemBuilder: (context, index) {
-                double percent = (expenceProvider.myExpense[index].amount /
-                        expenceProvider.total1) *
-                    100;
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 5,
-                    left: 10,
-                    right: 10,
+          expenses.isEmpty
+              ? Center(
+                  child: Text(
+                    'No Expenses',
                   ),
-                  child: ListTile(
-                    tileColor: expenceProvider.myExpense[index].category ==
-                            'Cash'
-                        ? Color.fromARGB(179, 235, 193, 193)
-                        : expenceProvider.myExpense[index].category == 'Card'
-                            ? Color.fromARGB(255, 186, 192, 228)
-                            : Color.fromARGB(255, 198, 216, 177),
-                    leading: CircularPercentIndicator(
-                      radius: 20,
-                      percent: percent / 100,
-                      center: Text(
-                        percent.toStringAsPrecision(3) + '%',
-                        style: GoogleFonts.poppins(
-                          fontSize: 8,
+                )
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      double percent =
+                          (expenses[index].amount / expenceProvider.total1) *
+                              100;
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                          left: 10,
+                          right: 10,
                         ),
-                      ),
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          expenceProvider.myExpense[index].category,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
+                        child: ListTile(
+                          tileColor: expenses[index].category == 'Cash'
+                              ? Color.fromARGB(179, 235, 193, 193)
+                              : expenses[index].category == 'Card'
+                                  ? Color.fromARGB(255, 186, 192, 228)
+                                  : Color.fromARGB(255, 198, 216, 177),
+                          leading: CircularPercentIndicator(
+                            radius: 20,
+                            percent: percent / 100,
+                            center: Text(
+                              percent.toStringAsPrecision(3) + '%',
+                              style: GoogleFonts.poppins(
+                                fontSize: 8,
+                              ),
+                            ),
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                expenses[index].category,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                '-' + expenses[index].amount.toString() + ' RS',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          subtitle: Text(
+                            DateFormat('EEE M-d-y').format(
+                              expenses[index].date,
+                            ),
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                            ),
                           ),
                         ),
-                        Text(
-                          '-' +
-                              expenceProvider.myExpense[index].amount
-                                  .toString() +
-                              ' RS',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      DateFormat('EEE M-d-y').format(
-                        expenceProvider.myExpense[index].date,
-                      ),
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
+                ),
         ],
       ),
     );
