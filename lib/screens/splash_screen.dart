@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
-import 'package:expense_and_income_tracker/provider/expence_provider.dart';
 import 'package:expense_and_income_tracker/screens/first_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void moveToIntro() {
     if (FirebaseAuth.instance.currentUser != null) {
       Timer(
-        Duration(
+        const Duration(
           seconds: 3,
         ),
         () {
@@ -33,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       );
     } else {
       Timer(
-        Duration(
+        const Duration(
           seconds: 3,
         ),
         () {
@@ -62,13 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           children: [
-            Spacer(
+            const Spacer(
               flex: 1,
             ),
-            Text(
+            const Text(
               'Expense Tracker',
             ),
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Color(0xffFF6007),
             ),
             const Spacer(

@@ -43,9 +43,9 @@ class _InputFieldsState extends State<InputFields> {
           : widget.hideText,
       decoration: InputDecoration(
         fillColor: Colors.black,
-        focusColor: Color(0xffEFCC4E),
-        hoverColor: Color(0xffEFCC4E),
-        floatingLabelStyle: TextStyle(
+        focusColor: const Color(0xffEFCC4E),
+        hoverColor: const Color(0xffEFCC4E),
+        floatingLabelStyle: const TextStyle(
           color: Color(0xffEFCC4E),
         ),
         focusedBorder: const OutlineInputBorder(

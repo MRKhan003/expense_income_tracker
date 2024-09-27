@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
-import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/provider/expence_provider.dart';
 import 'package:expense_and_income_tracker/screens/expense_screen.dart';
 import 'package:expense_and_income_tracker/screens/home_screen.dart';
@@ -58,7 +57,6 @@ class _FirstScreenState extends State<FirstScreen> {
       });
       return true;
     } catch (e) {
-      print('Error');
       return false;
     }
   }
@@ -85,8 +83,16 @@ class _FirstScreenState extends State<FirstScreen> {
           .ref()
           .child(FirebaseAuth.instance.currentUser!.uid)
           .delete();
-    } catch (e) {
-      print(e);
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.message!,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 5,
+        backgroundColor: const Color(0xffF8F8F8),
+        textColor: Colors.red,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -108,7 +114,7 @@ class _FirstScreenState extends State<FirstScreen> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
@@ -141,40 +147,11 @@ class _FirstScreenState extends State<FirstScreen> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.black,
         fontSize: 16.0,
       );
     }
-  }
-
-  _selectDate1(BuildContext context) async {
-    DateTime? selector = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000, 1),
-      lastDate: DateTime(2100),
-    );
-
-    if (selector != null && selector != DateTime.now()) {
-      setState(() {
-        selectedPage == 1 ? selectedDate = selector : selectedDate1 = selector;
-      });
-    }
-    return selectedDate;
-  }
-
-  List<Expense> filterExpenses(List<Expense> allExpenses, DateTime period) {
-    DateTime now = DateTime.now();
-    late DateTime startDate;
-
-    return allExpenses
-        .where(
-          (expense) => expense.date.isAfter(
-            selectedDate,
-          ),
-        )
-        .toList();
   }
 
   int selectedPage = 0;
@@ -258,7 +235,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   }
                   //getList.updateSelectedDate(selectedDate);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.calendar_month,
                   color: Colors.black,
                 ),
@@ -266,7 +243,7 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
           ),
         ],
-        backgroundColor: Color(0xffF8B31A),
+        backgroundColor: const Color(0xffF8B31A),
         surfaceTintColor: Colors.white,
       ),
       drawer: AbsorbPointer(
@@ -287,7 +264,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       running == 1
-                          ? CircularProgressIndicator(
+                          ? const CircularProgressIndicator(
                               color: Color(0xffF8B31A),
                             )
                           : GestureDetector(
@@ -327,7 +304,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               Expanded(
                 //flex: 1,
                 child: GestureDetector(
@@ -335,7 +312,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ExpenseFields(),
+                        builder: (context) => const ExpenseFields(),
                       ),
                     );
                   },
@@ -351,7 +328,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => IncomeFields(),
+                      builder: (context) => const IncomeFields(),
                     ),
                   ),
                   child: Draweritems(
@@ -361,7 +338,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 10,
@@ -377,6 +354,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       ),
                     );
                   },
+                  color: Colors.red,
                   controller: buttonController,
                   child: Text(
                     'Logout',
@@ -384,7 +362,6 @@ class _FirstScreenState extends State<FirstScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  color: Colors.red,
                 ),
               ),
             ],
@@ -392,7 +369,7 @@ class _FirstScreenState extends State<FirstScreen> {
         ),
       ),
       body: DoubleBackToCloseApp(
-        snackBar: SnackBar(
+        snackBar: const SnackBar(
           content: Text(
             'Back again to leave.',
           ),
@@ -403,7 +380,7 @@ class _FirstScreenState extends State<FirstScreen> {
         elevation: 1,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedPage,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -432,11 +409,11 @@ class _FirstScreenState extends State<FirstScreen> {
           },
         ),
         selectedLabelStyle: GoogleFonts.poppins(
-          color: Color(
+          color: const Color(
             0xffF8B31A,
           ),
         ),
-        selectedItemColor: Color(
+        selectedItemColor: const Color(
           0xffF8B31A,
         ),
         unselectedLabelStyle: GoogleFonts.poppins(

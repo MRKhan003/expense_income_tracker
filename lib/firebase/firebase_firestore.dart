@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_and_income_tracker/firebase/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 class UserDatabase {
   Future<bool> sendUserData(UserDetails current_user) async {
@@ -25,7 +22,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.green,
         fontSize: 16.0,
       );
@@ -36,7 +33,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
@@ -64,7 +61,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.green,
         fontSize: 16.0,
       );
@@ -75,7 +72,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
@@ -107,7 +104,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.green,
         fontSize: 16.0,
       );
@@ -118,7 +115,7 @@ class UserDatabase {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );

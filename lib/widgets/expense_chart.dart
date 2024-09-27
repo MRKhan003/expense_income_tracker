@@ -18,7 +18,7 @@ class ExpenseChart extends StatelessWidget {
   });
   String truncateString(String text, int maxLength) {
     return text.length > maxLength
-        ? text.substring(0, maxLength) + '...'
+        ? '${text.substring(0, maxLength)}...'
         : text;
   }
 
@@ -40,7 +40,7 @@ class ExpenseChart extends StatelessWidget {
                       expenses[expenseIndex].category,
                       4,
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   );
                 }
                 return Container();

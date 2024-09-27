@@ -14,7 +14,6 @@ class FirebaseFunctions with ChangeNotifier {
         .collection('Users')
         .where('DisplayName', isEqualTo: displayName)
         .get();
-    print('User name check');
     return nameResult.docs.isNotEmpty;
   }
 
@@ -28,7 +27,7 @@ class FirebaseFunctions with ChangeNotifier {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
@@ -53,7 +52,7 @@ class FirebaseFunctions with ChangeNotifier {
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 3,
-            backgroundColor: Color(0xffF8F8F8),
+            backgroundColor: const Color(0xffF8F8F8),
             textColor: Colors.red,
             fontSize: 16.0,
           );
@@ -64,7 +63,7 @@ class FirebaseFunctions with ChangeNotifier {
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 5,
-            backgroundColor: Color(0xffF8F8F8),
+            backgroundColor: const Color(0xffF8F8F8),
             textColor: Colors.red,
             fontSize: 16.0,
           );
@@ -75,7 +74,7 @@ class FirebaseFunctions with ChangeNotifier {
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 5,
-            backgroundColor: Color(0xffF8F8F8),
+            backgroundColor: const Color(0xffF8F8F8),
             textColor: Colors.red,
             fontSize: 16.0,
           );
@@ -88,7 +87,7 @@ class FirebaseFunctions with ChangeNotifier {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 5,
-          backgroundColor: Color(0xffF8F8F8),
+          backgroundColor: const Color(0xffF8F8F8),
           textColor: Colors.red,
           fontSize: 16.0,
         );
@@ -104,25 +103,20 @@ class FirebaseFunctions with ChangeNotifier {
           .signInWithEmailAndPassword(email: email, password: password);
       if (credential.user != null) {
         Fluttertoast.showToast(
-          msg: "Welcome back " +
-              await FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                  .get()
-                  .then((DocumentSnapshot doc) {
-                return doc['DisplayName'];
-              }),
+          msg:
+              "Welcome back ${await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get().then((DocumentSnapshot doc) {
+            return doc['DisplayName'];
+          })}",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 3,
-          backgroundColor: Color(0xffF8F8F8),
+          backgroundColor: const Color(0xffF8F8F8),
           textColor: Colors.green,
           fontSize: 16.0,
         );
         navigateToNextScreenAfterLogin(context);
         return true;
       } else {
-        print('Error');
         return false;
       }
     } on FirebaseException catch (e) {
@@ -131,7 +125,7 @@ class FirebaseFunctions with ChangeNotifier {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
@@ -155,7 +149,7 @@ class FirebaseFunctions with ChangeNotifier {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );

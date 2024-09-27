@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/provider/expence_provider.dart';
-import 'package:expense_and_income_tracker/widgets/drawerItems.dart';
 import 'package:expense_and_income_tracker/widgets/expense_chart.dart';
-import 'package:expense_and_income_tracker/widgets/expense_fields.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -44,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     total = 0;
     avg = 0;
     for (var i = 0; i < filterExpenseList.length; i++) {
-      temp = temp + filterExpenseList[index].amount;
-      index++;
+      temp = temp + filterExpenseList[i].amount;
+      //index++;
     }
     setState(() {
       total = temp;
@@ -58,15 +53,23 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void defaultValue(List<Expense> defaultExpense, int index) {
+    DateTime now = DateTime.now();
+    late DateTime startDate;
+    startDate = now.subtract(const Duration(days: 7));
+
     total1 = 0;
     temp1 = 0;
     avg1 = 0.0;
     for (var i = 0; i < defaultExpense.length; i++) {
-      temp1 = temp1 + defaultExpense[index].amount;
-      index++;
+      if (defaultExpense[i].date.isAfter(startDate)) {
+        total1 = total1 + defaultExpense[i].amount;
+        //index++;
+      } else {
+        continue;
+      }
     }
     setState(() {
-      total1 = temp1;
+      //total1 = temp1;
       avg1 = total1 / 7;
     });
   }
@@ -118,16 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     side: WidgetStatePropertyAll(
                       BorderSide(
                         color: isSelected == false
-                            ? Color(0xffF8B31A)
+                            ? const Color(0xffF8B31A)
                             : Colors.grey,
                       ),
                     ),
-                    backgroundColor: WidgetStatePropertyAll(
+                    backgroundColor: const WidgetStatePropertyAll(
                       Color(
                         0xffF8F8F8,
                       ),
                     ),
-                    elevation: WidgetStatePropertyAll(
+                    elevation: const WidgetStatePropertyAll(
                       50,
                     ),
                   ),
@@ -156,16 +159,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     side: WidgetStatePropertyAll(
                       BorderSide(
                         color: isSelected == true
-                            ? Color(0xffF8B31A)
+                            ? const Color(0xffF8B31A)
                             : Colors.grey,
                       ),
                     ),
-                    backgroundColor: WidgetStatePropertyAll(
+                    backgroundColor: const WidgetStatePropertyAll(
                       Color(
                         0xffF8F8F8,
                       ),
                     ),
-                    elevation: WidgetStatePropertyAll(
+                    elevation: const WidgetStatePropertyAll(
                       50,
                     ),
                   ),
@@ -227,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  total < 1
+                  total == 0.0
                       ? total1.toStringAsFixed(2)
                       : total.toStringAsFixed(2),
                   style: GoogleFonts.poppins(
@@ -237,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  avg < 1 ? avg1.toStringAsFixed(2) : avg.toStringAsFixed(2),
+                  avg == 0.0 ? avg1.toStringAsFixed(2) : avg.toStringAsFixed(2),
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -248,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           expenseProvider.thisRunning == 0
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(
                     color: Color(
                       0xffF8B31A,
@@ -311,9 +314,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           expenseProvider.thisRunning == 0
-              ? SizedBox()
+              ? const SizedBox()
               : expenseProvider.myExpense.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text(
                         'No expense added',
                       ),
@@ -333,39 +336,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                 tileColor: expenseProvider
                                             .myExpense[index].category ==
                                         'Cash'
-                                    ? Color.fromARGB(179, 235, 193, 193)
+                                    ? const Color.fromARGB(179, 235, 193, 193)
                                     : expenseProvider
                                                 .myExpense[index].category ==
                                             'Card'
-                                        ? Color.fromARGB(255, 186, 192, 228)
-                                        : Color.fromARGB(255, 198, 216, 177),
-                                leading:
-                                    expenseProvider.myExpense[index].category ==
-                                            'Cash'
-                                        ? Icon(
-                                            Icons.money_outlined,
-                                          )
+                                        ? const Color.fromARGB(
+                                            255, 186, 192, 228)
+                                        : const Color.fromARGB(
+                                            255, 198, 216, 177),
+                                leading: expenseProvider
+                                            .myExpense[index].category ==
+                                        'Cash'
+                                    ? const Icon(
+                                        Icons.money_outlined,
+                                      )
+                                    : expenseProvider
+                                                .myExpense[index].category ==
+                                            'Card'
+                                        ? const Icon(Icons.credit_card_outlined)
                                         : expenseProvider.myExpense[index]
                                                     .category ==
-                                                'Card'
-                                            ? Icon(Icons.credit_card_outlined)
+                                                'Cheque'
+                                            ? const Icon(
+                                                Icons.payment_outlined,
+                                              )
                                             : expenseProvider.myExpense[index]
                                                         .category ==
-                                                    'Cheque'
-                                                ? Icon(
-                                                    Icons.payment_outlined,
+                                                    'Money added to ATM'
+                                                ? const Icon(
+                                                    Icons
+                                                        .account_balance_outlined,
                                                   )
-                                                : expenseProvider
-                                                            .myExpense[index]
-                                                            .category ==
-                                                        'Money added to ATM'
-                                                    ? Icon(
-                                                        Icons
-                                                            .account_balance_outlined,
-                                                      )
-                                                    : Icon(
-                                                        Icons.money_outlined,
-                                                      ),
+                                                : const Icon(
+                                                    Icons.money_outlined,
+                                                  ),
                                 title: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

@@ -1,9 +1,7 @@
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:expense_and_income_tracker/authentications/sign_in_screen.dart';
 import 'package:expense_and_income_tracker/controllers/input_field_controller.dart';
 import 'package:expense_and_income_tracker/firebase/firebase_functions.dart';
 import 'package:expense_and_income_tracker/widgets/inputFieldWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -151,16 +149,10 @@ class _AccountCreationState extends State<AccountCreation> {
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 5,
-                      backgroundColor: Color(0xffF8F8F8),
+                      backgroundColor: const Color(0xffF8F8F8),
                       textColor: Colors.red,
                       fontSize: 16.0);
                 }
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => UserLogin(),
-                //   ),
-                // );
               },
               child: Text(
                 'SIGN UP',

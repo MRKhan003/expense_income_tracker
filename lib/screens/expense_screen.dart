@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_and_income_tracker/expense_controller/my_expense.dart';
 import 'package:expense_and_income_tracker/provider/expence_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +24,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     super.initState();
   }
 
+  String truncateString(String text, int maxLength) {
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
+  }
+
   int total = 0, temp = 0;
 
   @override
@@ -38,13 +42,25 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
           const SizedBox(
             height: 10,
           ),
-          expenses.isEmpty
-              ? Center(
-                  child: Text(
-                    'No Expenses',
-                  ),
-                )
-              : Expanded(
+          Row(
+            children: [
+              expenses.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No Expenses',
+                      ),
+                    )
+                  : const SizedBox(),
+              Container(
+                child: TextButton(
+                  child: Text('View all expenses'),
+                  onPressed: () {},
+                ),
+              )
+            ],
+          ),
+          expenses.isNotEmpty
+              ? Expanded(
                   child: ListView.builder(
                     itemCount: expenses.length,
                     itemBuilder: (context, index) {
@@ -59,15 +75,15 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                         ),
                         child: ListTile(
                           tileColor: expenses[index].category == 'Cash'
-                              ? Color.fromARGB(179, 235, 193, 193)
+                              ? const Color.fromARGB(179, 235, 193, 193)
                               : expenses[index].category == 'Card'
-                                  ? Color.fromARGB(255, 186, 192, 228)
-                                  : Color.fromARGB(255, 198, 216, 177),
+                                  ? const Color.fromARGB(255, 186, 192, 228)
+                                  : const Color.fromARGB(255, 198, 216, 177),
                           leading: CircularPercentIndicator(
                             radius: 20,
                             percent: percent / 100,
                             center: Text(
-                              percent.toStringAsPrecision(3) + '%',
+                              '${percent.toStringAsPrecision(3)}%',
                               style: GoogleFonts.poppins(
                                 fontSize: 8,
                               ),
@@ -77,13 +93,16 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                expenses[index].category,
+                                truncateString(
+                                  expenses[index].category,
+                                  25,
+                                ),
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                '-' + expenses[index].amount.toString() + ' RS',
+                                '-${expenses[index].amount} RS',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                 ),
@@ -102,7 +121,8 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       );
                     },
                   ),
-                ),
+                )
+              : const SizedBox(),
         ],
       ),
     );

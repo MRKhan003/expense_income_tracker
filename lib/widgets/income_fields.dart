@@ -87,19 +87,19 @@ class _IncomeFieldsState extends State<IncomeFields> {
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.person_2_outlined,
                   ),
-                  label: Text(
+                  label: const Text(
                     'Vendor Name',
                   ),
                   labelStyle: GoogleFonts.poppins(color: Colors.black45),
                   floatingLabelStyle: GoogleFonts.poppins(
-                    color: Color(
+                    color: const Color(
                       0xffF8B31A,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -110,7 +110,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -121,7 +121,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(
                         0xffF8B31A,
@@ -144,19 +144,19 @@ class _IncomeFieldsState extends State<IncomeFields> {
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.money_outlined,
                   ),
-                  label: Text(
+                  label: const Text(
                     'Amount',
                   ),
                   labelStyle: GoogleFonts.poppins(color: Colors.black45),
                   floatingLabelStyle: GoogleFonts.poppins(
-                    color: Color(
+                    color: const Color(
                       0xffF8B31A,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -167,7 +167,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -178,7 +178,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(
                         0xffF8B31A,
@@ -202,19 +202,19 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       cursorColor: Colors.black45,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.account_balance_outlined,
                         ),
-                        label: Text(
+                        label: const Text(
                           'Check Number',
                         ),
                         labelStyle: GoogleFonts.poppins(color: Colors.black45),
                         floatingLabelStyle: GoogleFonts.poppins(
-                          color: Color(
+                          color: const Color(
                             0xffF8B31A,
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -225,7 +225,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                             ),
                           ),
                         ),
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -236,7 +236,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                             ),
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(
                               0xffF8B31A,
@@ -252,7 +252,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
@@ -263,17 +263,17 @@ class _IncomeFieldsState extends State<IncomeFields> {
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.calendar_month_outlined,
                   ),
-                  label: Text('Time'),
+                  label: const Text('Time'),
                   labelStyle: GoogleFonts.poppins(color: Colors.black45),
                   floatingLabelStyle: GoogleFonts.poppins(
-                    color: Color(
+                    color: const Color(
                       0xffF8B31A,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -284,7 +284,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -295,7 +295,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                       ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(
                         0xffF8B31A,
@@ -326,7 +326,7 @@ class _IncomeFieldsState extends State<IncomeFields> {
                 controller.paymentTypeController.clear();
                 controller.reasonController.clear();
               },
-              child: Text(
+              child: const Text(
                 'Save',
               ),
             ),

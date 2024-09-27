@@ -1,10 +1,8 @@
 import 'package:expense_and_income_tracker/authentications/signup_screen.dart';
 import 'package:expense_and_income_tracker/controllers/input_field_controller.dart';
 import 'package:expense_and_income_tracker/firebase/firebase_functions.dart';
-import 'package:expense_and_income_tracker/screens/first_screen.dart';
 import 'package:expense_and_income_tracker/widgets/inputFieldWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
@@ -117,7 +115,7 @@ class _UserLoginState extends State<UserLogin> {
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 5,
-                      backgroundColor: Color(0xffF8F8F8),
+                      backgroundColor: const Color(0xffF8F8F8),
                       textColor: Colors.red,
                       fontSize: 16.0);
                 } else {

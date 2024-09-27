@@ -82,7 +82,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
             ),
             selectedValue == 'Total Lottery Payout' ||
                     selectedValue == 'Pull Tab'
-                ? SizedBox()
+                ? const SizedBox()
                 : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
@@ -104,11 +104,11 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                           color: Colors.black45,
                         ),
                         floatingLabelStyle: GoogleFonts.poppins(
-                          color: Color(
+                          color: const Color(
                             0xffF8B31A,
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -119,7 +119,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                             ),
                           ),
                         ),
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -130,7 +130,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                             ),
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(
                               0xffF8B31A,
@@ -153,21 +153,21 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.money_outlined,
                   ),
-                  label: Text(
+                  label: const Text(
                     'Amount',
                   ),
                   labelStyle: GoogleFonts.poppins(
                     color: Colors.black45,
                   ),
                   floatingLabelStyle: GoogleFonts.poppins(
-                    color: Color(
+                    color: const Color(
                       0xffF8B31A,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -178,7 +178,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -189,7 +189,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(
                         0xffF8B31A,
@@ -213,19 +213,19 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       cursorColor: Colors.black45,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.account_balance_outlined,
                         ),
-                        label: Text(
+                        label: const Text(
                           'Check Number',
                         ),
                         labelStyle: GoogleFonts.poppins(color: Colors.black45),
                         floatingLabelStyle: GoogleFonts.poppins(
-                          color: Color(
+                          color: const Color(
                             0xffF8B31A,
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -236,7 +236,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                             ),
                           ),
                         ),
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black45,
                             style: BorderStyle.solid,
@@ -247,7 +247,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                             ),
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(
                               0xffF8B31A,
@@ -263,7 +263,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       ),
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
@@ -274,17 +274,17 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                 cursorColor: Colors.black45,
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.calendar_month_outlined,
                   ),
-                  label: Text('Time'),
+                  label: const Text('Time'),
                   labelStyle: GoogleFonts.poppins(color: Colors.black45),
                   floatingLabelStyle: GoogleFonts.poppins(
-                    color: Color(
+                    color: const Color(
                       0xffF8B31A,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -295,7 +295,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black45,
                       style: BorderStyle.solid,
@@ -306,7 +306,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
                       ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(
                         0xffF8B31A,
@@ -339,7 +339,7 @@ class _ExpenseFieldsState extends State<ExpenseFields> {
 
                 selectedValue == null;
               },
-              child: Text(
+              child: const Text(
                 'Save',
               ),
             ),

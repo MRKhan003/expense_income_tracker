@@ -1,8 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expense_and_income_tracker/controllers/income_controller.dart';
-import 'package:expense_and_income_tracker/expense_controller/my_income.dart';
 import 'package:expense_and_income_tracker/provider/expence_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +19,12 @@ class _IncomeScreenState extends State<IncomeScreen> {
     super.initState();
   }
 
+  String truncateString(String text, int maxLength) {
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
+  }
+
   @override
   Widget build(BuildContext context) {
     var incomeProvider = Provider.of<ExpenceProvider>(context);
@@ -30,11 +32,11 @@ class _IncomeScreenState extends State<IncomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           incomeGetter.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                     'No income date',
                   ),
@@ -52,40 +54,41 @@ class _IncomeScreenState extends State<IncomeScreen> {
                         child: ListTile(
                           tileColor: incomeGetter[index].incomeType ==
                                   'Register Credit Card Sales'
-                              ? Color.fromARGB(179, 235, 193, 193)
+                              ? const Color.fromARGB(179, 235, 193, 193)
                               : incomeGetter[index].incomeType ==
                                       'Register Cash Sales'
-                                  ? Color.fromARGB(255, 186, 192, 228)
-                                  : Color.fromARGB(255, 198, 216, 177),
+                                  ? const Color.fromARGB(255, 186, 192, 228)
+                                  : const Color.fromARGB(255, 198, 216, 177),
                           leading: incomeGetter[index].incomeType ==
                                   'Register Credit Card Sales'
-                              ? Icon(
+                              ? const Icon(
                                   Icons.credit_card_outlined,
                                 )
                               : incomeGetter[index].incomeType ==
                                       'Register Cash Sales'
-                                  ? Icon(Icons.money_outlined)
+                                  ? const Icon(Icons.money_outlined)
                                   : incomeGetter[index].incomeType ==
                                           'Check Received from Vendor'
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.account_balance_outlined,
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.wallet_outlined,
                                         ),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                incomeGetter[index].incomeType,
+                                truncateString(
+                                  incomeGetter[index].incomeType,
+                                  25,
+                                ),
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                '+' +
-                                    incomeGetter[index].amount.toString() +
-                                    ' RS',
+                                '+${incomeGetter[index].amount} RS',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                 ),

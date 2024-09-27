@@ -50,7 +50,6 @@ class ExpenceProvider with ChangeNotifier {
       snapshot.docs.forEach((doc) {
         type = doc['Expense Type'];
         time = doc['Time'];
-        print('Here');
         money = doc['Amount'];
         Expense expense = Expense(
           type,
@@ -65,8 +64,6 @@ class ExpenceProvider with ChangeNotifier {
       expenses.isEmpty ? ref == true : ref == false;
       running = 1;
       filteredExpense = expenses;
-      print(total1);
-      print(expenses);
       notifyListeners();
       return true;
     } catch (e) {
@@ -76,18 +73,14 @@ class ExpenceProvider with ChangeNotifier {
 
   Future<bool> totalIncome() async {
     try {
-      print('Here1');
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('Users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('Income')
           .get();
       snapshot.docs.forEach((doc) {
-        print('Here1');
         incomeType = doc['Income Type'];
-        print('Here1');
         incomeTime = doc['Time'];
-        print('Here1');
         incomeAmount = doc['Ammount'];
         MyIncome thisIncome = MyIncome(
           incomeType: incomeType,
@@ -102,8 +95,6 @@ class ExpenceProvider with ChangeNotifier {
       income.isEmpty ? ref == true : ref == false;
       running = 1;
       filteredIncome = income;
-      print(total);
-      print(income);
       notifyListeners();
       return true;
     } catch (e) {
@@ -112,11 +103,7 @@ class ExpenceProvider with ChangeNotifier {
   }
 
   void updateSelectedDate(DateTime date) {
-    print(date);
     selectedDate = date;
-    print('update');
-    print(thisFilterExpense);
-    print(filteredExpense);
     notifyListeners(); // Notify listeners that the date has changed
   }
 
@@ -154,14 +141,13 @@ class ProfileImageProvider with ChangeNotifier {
         running = 1;
       });
       notifyListeners();
-      print(profileImage);
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(
         msg: e.message.toString(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Color(0xffF8F8F8),
+        backgroundColor: const Color(0xffF8F8F8),
         textColor: Colors.red,
         fontSize: 16.0,
       );
